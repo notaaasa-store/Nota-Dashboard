@@ -1,0 +1,207 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id                  String    @id @default(cuid())
+  name                String
+  sku                 String    @unique
+  category            String
+  description         String?
+  productionCost      Float     @default(0)
+  packagingCost       Float     @default(0)
+  totalProductCost    Float     @default(0)
+  sellingPrice        Float
+  netProfitPerUnit    Float     @default(0)
+  profitMargin        Float     @default(0)
+  inventoryQuantity   Int       @default(0)
+  reorderLevel        Int       @default(5)
+  stockStatus         String    @default("In Stock")
+  imageUrl            String?
+  isActive            Boolean   @default(true)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Relations
+  packagingItems      ProductPackaging[]
+  printingRecords     Printing[]
+  orderItems          OrderItem[]
+  inventory           Inventory?
+
+  @@index([category])
+  @@index([isActive])
+}
+
+model Packaging {
+  id                  String    @id @default(cuid())
+  name                String
+  type                String
+  quantityPurchased   Int
+  totalPurchaseCost   Float
+  costPerUnit         Float
+  supplier            String?
+  purchaseDate        DateTime
+  remainingQuantity   Int
+  notes               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Relations
+  productPackaging    ProductPackaging[]
+  partnerContributions PartnerContribution[] @relation("PackagingContributions")
+
+  @@index([type])
+}
+
+model ProductPackaging {
+  id                  String    @id @default(cuid())
+  productId           String
+  packagingId         String
+  quantity            Int       @default(1)
+
+  // Relations
+  product             Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  packaging           Packaging @relation(fields: [packagingId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, packagingId])
+  @@index([productId])
+  @@index([packagingId])
+}
+
+model Printing {
+  id                  String    @id @default(cuid())
+  itemName            String
+  productId           String
+  quantityProduced    Int
+  totalPrintingCost   Float
+  costPerUnit         Float
+  supplier            String?
+  date                DateTime
+  notes               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Relations
+  product             Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  partnerContributions PartnerContribution[] @relation("PrintingContributions")
+
+  @@index([productId])
+  @@index([date])
+}
+
+model Inventory {
+  id                  String    @id @default(cuid())
+  productId           String    @unique
+  currentQuantity     Int       @default(0)
+  unitCost            Float     @default(0)
+  totalInventoryValue Float     @default(0)
+  reorderLevel        Int       @default(5)
+  stockStatus         String    @default("In Stock")
+  lastUpdated         DateTime  @default(now())
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Relations
+  product             Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([stockStatus])
+}
+
+model Order {
+  id                  String    @id @default(cuid())
+  orderNumber         String    @unique
+  orderDate           DateTime  @default(now())
+  customerName        String
+  customerContact     String?
+  orderStatus         String    @default("Pending")
+  paymentStatus       String    @default("Pending")
+  totalRevenue        Float     @default(0)
+  totalCost           Float     @default(0)
+  netProfit           Float     @default(0)
+  notes               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Relations
+  orderItems          OrderItem[]
+
+  @@index([orderDate])
+  @@index([orderStatus])
+  @@index([paymentStatus])
+}
+
+model OrderItem {
+  id                  String    @id @default(cuid())
+  orderId             String
+  productId           String
+  quantity            Int
+  sellingPrice        Float
+  productCost         Float
+  packagingCost       Float
+  totalRevenue        Float
+  totalCost           Float
+  netProfit           Float
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Relations
+  order               Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product             Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model BusinessExpense {
+  id                  String    @id @default(cuid())
+  name                String
+  category            String
+  amount              Float
+  paidBy              String
+  date                DateTime  @default(now())
+  isRecurring         Boolean   @default(false)
+  description         String?
+  receiptUrl          String?
+  notes               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Relations
+  partnerContributions PartnerContribution[] @relation("ExpenseContributions")
+
+  @@index([category])
+  @@index([date])
+  @@index([paidBy])
+}
+
+model PartnerContribution {
+  id                  String    @id @default(cuid())
+  date                DateTime  @default(now())
+  partner             String
+  description         String
+  amount              Float
+  category            String
+  relatedExpenseId    String?
+  relatedPackagingId  String?
+  relatedPrintingId   String?
+  notes               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Relations
+  relatedExpense      BusinessExpense? @relation("ExpenseContributions", fields: [relatedExpenseId], references: [id], onDelete: SetNull)
+  relatedPackaging    Packaging?       @relation("PackagingContributions", fields: [relatedPackagingId], references: [id], onDelete: SetNull)
+  relatedPrinting     Printing?        @relation("PrintingContributions", fields: [relatedPrintingId], references: [id], onDelete: SetNull)
+
+  @@index([partner])
+  @@index([date])
+  @@index([category])
+}
