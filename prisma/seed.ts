@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -570,6 +571,32 @@ async function main() {
   ])
 
   console.log('Created partner contributions')
+
+  // Create users
+  const aliPassword = await bcrypt.hash('N0ta@2024!Secure#Ali', 10)
+  const salmaPassword = await bcrypt.hash('N0ta@2024!Secure#Salma', 10)
+
+  await prisma.user.createMany({
+    data: [
+      {
+        email: 'alielkiki30@gmail.com',
+        name: 'ALI',
+        password: aliPassword,
+        role: 'admin',
+      },
+      {
+        email: 'salmagamalhammad2001@gmail.com',
+        name: 'Salma',
+        password: salmaPassword,
+        role: 'admin',
+      },
+    ],
+  })
+
+  console.log('Created users')
+  console.log('User credentials:')
+  console.log('ALI: alielkiki30@gmail.com / Password: N0ta@2024!Secure#Ali')
+  console.log('Salma: salmagamalhammad2001@gmail.com / Password: N0ta@2024!Secure#Salma')
 
   console.log('Seed completed successfully!')
 }

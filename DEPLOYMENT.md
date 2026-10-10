@@ -50,27 +50,40 @@ git push -u origin main
 2. Replace the DATABASE_URL with your Supabase connection string:
 ```env
 DATABASE_URL="postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-0-[REGION].supabase.co:5432/postgres"
+NEXTAUTH_SECRET="your-secret-key-here-change-this-in-production"
+NEXTAUTH_URL="http://localhost:3000"
 ```
 
-3. Install the PostgreSQL adapter:
+3. Generate a random NEXTAUTH_SECRET:
+```bash
+openssl rand -base64 32
+```
+
+4. Install the PostgreSQL adapter:
 ```bash
 npm install @prisma/adapter-pg pg
 ```
 
-4. Update the database schema:
+5. Update the database schema:
 ```bash
 npx prisma migrate dev
 ```
 
-5. Seed the database with sample data:
+6. Seed the database with sample data:
 ```bash
 npm run seed
 ```
 
-6. Test locally:
+This will create two user accounts:
+- **ALI**: alielkiki30@gmail.com / Password: `N0ta@2024!Secure#Ali`
+- **Salma**: salmagamalhammad2001@gmail.com / Password: `N0ta@2024!Secure#Salma`
+
+7. Test locally:
 ```bash
 npm run dev
 ```
+8. Visit http://localhost:3000 - you'll be redirected to login
+9. Sign in with your credentials
 
 ### Step 4: Deploy to Vercel
 
@@ -83,32 +96,63 @@ npm run dev
 7. In **Environment Variables**, add:
    - Name: `DATABASE_URL`
    - Value: Your Supabase connection string (from Step 2)
+   - Name: `NEXTAUTH_SECRET`
+   - Value: Generate a random secret (use: `openssl rand -base64 32`)
+   - Name: `NEXTAUTH_URL`
+   - Value: Your Vercel URL (e.g., `https://your-dashboard.vercel.app`)
 8. Click **"Deploy"**
 9. Wait for deployment (1-2 minutes)
 10. You'll get a URL like: `https://your-dashboard.vercel.app`
 
 ### Step 5: Share with Your Partner
 
-Simply share the Vercel URL with your partner:
-- They can access it from any device
+1. Share the Vercel URL with your partner
+2. Share their login credentials:
+   - **Email**: salmagamalhammad2001@gmail.com
+   - **Password**: N0ta@2024!Secure#Salma
+
+Your partner can:
+- Access it from any device
 - No installation needed
 - No setup required
-- They'll see the same data as you
+- See the same data as you in real-time
+- Log in securely with their credentials
 
-## 🔐 Security Considerations
+**Important**: Tell them to change their password after first login (you can add a password change feature later if needed).
 
-### Option 1: Simple Access (No Authentication)
-- Anyone with the URL can access the dashboard
-- Good for trusted partners
-- Quick to set up
+## 🔐 Security Features
 
-### Option 2: Add Authentication (Recommended)
-If you want to restrict access, I can add:
-- Email/password login
-- Only ALI and Salma can access
-- Secure data protection
+The dashboard includes secure authentication:
 
-**Would you like me to add authentication?**
+- **Email/Password Login**: Both users must log in with their credentials
+- **Session Management**: Secure sessions with NextAuth.js
+- **Route Protection**: All dashboard pages are protected
+- **Password Hashing**: Passwords are securely hashed with bcrypt
+- **Only Authorized Users**: Only ALI and Salma can access the dashboard
+
+## 👥 User Accounts
+
+Two user accounts are created when you seed the database:
+
+### ALI
+- **Email**: alielkiki30@gmail.com
+- **Password**: N0ta@2024!Secure#Ali
+- **Role**: Admin
+
+### Salma
+- **Email**: salmagamalhammad2001@gmail.com
+- **Password**: N0ta@2024!Secure#Salma
+- **Role**: Admin
+
+## 🔑 Password Security
+
+Both passwords are strong and include:
+- Uppercase and lowercase letters
+- Numbers
+- Special characters
+- 16+ characters long
+
+**Recommendation**: After first login, consider adding a password change feature for users to update their passwords.
 
 ## 💰 Costs
 
