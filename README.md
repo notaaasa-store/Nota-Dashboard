@@ -12,12 +12,13 @@ A comprehensive business management system for tracking finances, inventory, ord
 - **Printing**: Production cost tracking for printed materials
 - **Business Expenses**: General business expenses (software, hosting, advertising, etc.)
 - **Partner Contributions**: Track payments made by business partners (ALI and Salma)
+- **Cloud Deployment**: Deploy as a live website for multi-user access with real-time data sync
 
 ## Tech Stack
 
 - **Frontend**: Next.js 16 with TypeScript
 - **Styling**: Tailwind CSS
-- **Database**: SQLite with Prisma ORM
+- **Database**: PostgreSQL with Prisma ORM (deployed) / SQLite (local development)
 - **UI Components**: Custom components with light pink/blush aesthetic
 
 ## Getting Started
@@ -27,7 +28,7 @@ A comprehensive business management system for tracking finances, inventory, ord
 - Node.js 18+ installed
 - npm or yarn package manager
 
-### Installation
+### Local Development (SQLite)
 
 1. Clone the repository:
 ```bash
@@ -56,6 +57,18 @@ npm run dev
 ```
 
 6. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Cloud Deployment (PostgreSQL - Multi-User Access)
+
+For deployment where both you and your partner can access the dashboard from anywhere with real-time data sync, see [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
+
+**Quick Summary:**
+1. Set up free PostgreSQL database (Supabase recommended)
+2. Push code to GitHub
+3. Deploy to Vercel (free)
+4. Share the URL with your partner
+
+**Cost:** $0/month (Vercel + Supabase free tiers)
 
 ## Database Schema
 
