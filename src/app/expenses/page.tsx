@@ -19,20 +19,20 @@ export default async function ExpensesPage() {
             <h1 className="text-2xl font-semibold text-[#2D292A]">Business Expenses</h1>
             <p className="text-[#7A7173] mt-1">Track general business expenses (not product-specific)</p>
           </div>
-          <button className="px-4 py-2 bg-[#E9AAB8] hover:bg-[#D99A8A] text-white rounded-lg transition-colors font-medium">
+          <button className="px-4 py-2 bg-[#D8A0B0] hover:bg-[#D99A8A] text-white rounded-lg transition-colors font-medium">
             Add Expense
           </button>
         </div>
         {expenses.length === 0 ? (
-          <div className="bg-white rounded-lg border border-[#F8DDE3] p-12 text-center shadow-sm">
+          <div className="bg-white rounded-lg border border-[#F0D0D8] p-12 text-center shadow-sm">
             <p className="text-[#7A7173] text-lg mb-4">No expenses yet</p>
             <p className="text-[#7A7173] text-sm">
               Add your first business expense to start tracking operational costs.
             </p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg border border-[#F8DDE3] shadow-sm overflow-hidden">
-            <table className="min-w-full divide-y divide-[#F8DDE3]">
+          <div className="bg-white rounded-lg border border-[#F0D0D8] shadow-sm overflow-hidden">
+            <table className="min-w-full divide-y divide-[#F0D0D8]">
               <thead className="bg-[#FFF9FA]">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-[#7A7173] uppercase tracking-wider">
@@ -58,7 +58,7 @@ export default async function ExpensesPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-[#F8DDE3]">
+              <tbody className="bg-white divide-y divide-[#F0D0D8]">
                 {expenses.map((expense) => (
                   <tr key={expense.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#2D292A] font-medium">
@@ -78,17 +78,17 @@ export default async function ExpensesPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {expense.isRecurring ? (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-[#E9AAB8] text-white">
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-[#D8A0B0] text-white">
                           Yes
                         </span>
                       ) : (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-[#F8DDE3] text-[#7A7173]">
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-[#F0D0D8] text-[#7A7173]">
                           No
                         </span>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                      <button className="text-[#E9AAB8] hover:text-[#D99A8A] font-medium mr-3">
+                      <button className="text-[#D8A0B0] hover:text-[#D99A8A] font-medium mr-3">
                         Edit
                       </button>
                       <DeleteButton expenseId={expense.id} />

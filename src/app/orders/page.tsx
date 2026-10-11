@@ -17,7 +17,7 @@ export default async function OrdersPage() {
   })
 
   return (
-    <div className="min-h-screen bg-[#FFF9FA]">
+    <div className="min-h-screen bg-[#FFF0F2]">
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -26,12 +26,12 @@ export default async function OrdersPage() {
             <h1 className="text-2xl font-semibold text-[#2D292A]">Orders</h1>
             <p className="text-[#7A7173] mt-1">Manage customer orders and track revenue</p>
           </div>
-          <button className="px-4 py-2 bg-[#E9AAB8] hover:bg-[#D99A8A] text-white rounded-lg transition-colors font-medium">
+          <button className="px-4 py-2 bg-[#D8A0B0] hover:bg-[#D99A8A] text-white rounded-lg transition-colors font-medium">
             Add Order
           </button>
         </div>
         {orders.length === 0 ? (
-          <div className="bg-white rounded-lg border border-[#F8DDE3] p-12 text-center shadow-sm">
+          <div className="bg-white rounded-lg border border-[#F0D0D8] p-12 text-center shadow-sm">
             <p className="text-[#7A7173] text-lg mb-4">No orders yet</p>
             <p className="text-[#7A7173] text-sm">
               Add your first order to start tracking sales and revenue.
@@ -42,7 +42,7 @@ export default async function OrdersPage() {
             {orders.map((order) => (
               <div
                 key={order.id}
-                className="bg-white rounded-lg border border-[#F8DDE3] p-6 shadow-sm"
+                className="bg-white rounded-lg border border-[#F0D0D8] p-6 shadow-sm"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
@@ -80,7 +80,7 @@ export default async function OrdersPage() {
                 </div>
 
                 {/* Order Items */}
-                <div className="bg-[#FFF9FA] rounded-lg p-4 mb-4">
+                <div className="bg-[#FFF0F2] rounded-lg p-4 mb-4">
                   <p className="text-sm font-medium text-[#2D292A] mb-3">Order Items</p>
                   <div className="space-y-2">
                     {order.orderItems.map((item) => (
@@ -116,7 +116,7 @@ export default async function OrdersPage() {
                     <p className="text-[#A7D7C5] font-semibold">EGP {order.netProfit.toFixed(2)}</p>
                   </div>
                   <div className="flex gap-2 items-end">
-                    <button className="flex-1 px-3 py-2 bg-[#F8DDE3] hover:bg-[#E9AAB8] text-[#2D292A] rounded-lg transition-colors text-sm font-medium">
+                    <button className="flex-1 px-3 py-2 bg-[#F0D0D8] hover:bg-[#D8A0B0] text-[#2D292A] rounded-lg transition-colors text-sm font-medium">
                       Edit
                     </button>
                     <DeleteButton orderId={order.id} />

@@ -12,7 +12,7 @@ export default async function InventoryPage() {
   })
 
   return (
-    <div className="min-h-screen bg-[#FFF9FA]">
+    <div className="min-h-screen bg-[#FFF0F2]">
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -21,16 +21,16 @@ export default async function InventoryPage() {
           <p className="text-[#7A7173] mt-1">Track stock levels and inventory value</p>
         </div>
         {inventory.length === 0 ? (
-          <div className="bg-white rounded-lg border border-[#F8DDE3] p-12 text-center shadow-sm">
+          <div className="bg-white rounded-lg border border-[#F0D0D8] p-12 text-center shadow-sm">
             <p className="text-[#7A7173] text-lg mb-4">No inventory yet</p>
             <p className="text-[#7A7173] text-sm">
               Inventory will be automatically managed when you add products and orders.
             </p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg border border-[#F8DDE3] shadow-sm overflow-hidden">
-            <table className="min-w-full divide-y divide-[#F8DDE3]">
-              <thead className="bg-[#FFF9FA]">
+          <div className="bg-white rounded-lg border border-[#F0D0D8] shadow-sm overflow-hidden">
+            <table className="min-w-full divide-y divide-[#F0D0D8]">
+              <thead className="bg-[#FFF0F2]">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-[#7A7173] uppercase tracking-wider">
                     Product
@@ -55,7 +55,7 @@ export default async function InventoryPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-[#F8DDE3]">
+              <tbody className="bg-white divide-y divide-[#F0D0D8]">
                 {inventory.map((item) => (
                   <tr key={item.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-[#2D292A] font-medium">
