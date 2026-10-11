@@ -63,5 +63,5 @@ export const authOptions: NextAuthOptions = {
       return session
     }
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || "nota-dashboard-secret-key-2024-secure-auth",
 }
