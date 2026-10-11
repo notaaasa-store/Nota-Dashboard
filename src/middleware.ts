@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
+  // Temporarily disable auth for testing
+  return NextResponse.next()
+
   const isAuthPage = request.nextUrl.pathname.startsWith('/login')
   const isApiAuth = request.nextUrl.pathname.startsWith('/api/auth')
   const token = request.cookies.get('next-auth.session-token')

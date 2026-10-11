@@ -21,15 +21,22 @@ export default function LoginPage() {
         email,
         password,
         redirect: false,
+        callbackUrl: '/',
       })
 
+      console.log('Sign in result:', result)
+
       if (result?.error) {
+        console.error('Sign in error:', result.error)
         setError('Invalid email or password')
+      } else if (result?.ok) {
+        console.log('Sign in successful, redirecting...')
+        window.location.href = '/'
       } else {
-        router.push('/')
-        router.refresh()
+        setError('An error occurred. Please try again.')
       }
     } catch (error) {
+      console.error('Sign in exception:', error)
       setError('An error occurred. Please try again.')
     } finally {
       setLoading(false)
