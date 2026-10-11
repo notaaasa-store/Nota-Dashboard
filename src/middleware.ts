@@ -2,7 +2,23 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  // Disable auth protection temporarily to test login
+  const isAuthPage = request.nextUrl.pathname.startsWith('/login')
+  const isApiAuth = request.nextUrl.pathname.startsWith('/api/auth')
+
+  // Check for NextAuth session cookie (multiple possible names)
+  const token = request.cookies.get('next-auth.session-token') ||
+                request.cookies.get('__Secure-next-auth.session-token')
+
+  // If trying to access protected route without token, redirect to login
+  if (!isAuthPage && !isApiAuth && !token) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
+  // If already logged in and trying to access login page, redirect to dashboard
+  if (isAuthPage && token) {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+
   return NextResponse.next()
 }
 
