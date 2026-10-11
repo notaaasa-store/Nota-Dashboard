@@ -1,14 +1,10 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaPG } from '@prisma/adapter-pg'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-const adapter = new PrismaPG()
-
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({
-  adapter,
   log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
 })
 
