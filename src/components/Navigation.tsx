@@ -23,6 +23,7 @@ export default function Navigation() {
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: '/login' })
+    window.location.href = '/login'
   }
 
   return (
