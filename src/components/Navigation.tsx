@@ -2,10 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useSession, signOut } from 'next-auth/react'
 import { useState } from 'react'
 
 export default function Navigation() {
   const pathname = usePathname()
+  const { data: session } = useSession()
   const [isOpen, setIsOpen] = useState(false)
 
   const navItems = [
@@ -18,6 +20,10 @@ export default function Navigation() {
     { href: '/expenses', label: 'Expenses' },
     { href: '/partners', label: 'Partners' },
   ]
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/login' })
+  }
 
   return (
     <nav className="bg-white border-b border-[#FFE5F0] sticky top-0 z-50">
@@ -42,33 +48,48 @@ export default function Navigation() {
             })}
           </div>
 
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="sm:hidden p-2 rounded-lg text-[#B7ADA3] hover:bg-[#FFE5F0]"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <div className="flex items-center gap-3">
+            {session && (
+              <span className="hidden sm:block text-sm text-[#B7ADA3]">
+                {session.user?.name}
+              </span>
+            )}
+            {session && (
+              <button
+                onClick={handleLogout}
+                className="px-3 py-2 bg-[#F951AC] hover:bg-[#E0489E] text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Logout
+              </button>
+            )}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="sm:hidden p-2 rounded-lg text-[#B7ADA3] hover:bg-[#FFE5F0]"
             >
-              {isOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {isOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
 
         {isOpen && (
@@ -91,6 +112,17 @@ export default function Navigation() {
                   </Link>
                 )
               })}
+              {session && (
+                <button
+                  onClick={() => {
+                    handleLogout()
+                    setIsOpen(false)
+                  }}
+                  className="px-3 py-2 bg-[#F951AC] hover:bg-[#E0489E] text-white rounded-lg text-sm font-medium transition-colors text-left"
+                >
+                  Logout
+                </button>
+              )}
             </div>
           </div>
         )}
